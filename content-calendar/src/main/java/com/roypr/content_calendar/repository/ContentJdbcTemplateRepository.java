@@ -19,7 +19,7 @@ public class ContentJdbcTemplateRepository {
      * This instance is used for executing SQL queries.
      */
 
-    private final JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;  //usually represents 1 usage sql query
 
     //as there is only 1 public constructor, the constructor param is autowired for dependency injection
     public ContentJdbcTemplateRepository(JdbcTemplate jdbcTemplate) {
@@ -34,7 +34,7 @@ public class ContentJdbcTemplateRepository {
     private static Content mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new Content(rs.getInt("id"),
                 rs.getString("title"),
-                rs.getString("desc"),
+                rs.getString("description"),
                 Status.valueOf(rs.getString("status")),
                 Type.valueOf(rs.getString("content_type")),
                 rs.getObject("date_created", LocalDateTime.class),
@@ -42,9 +42,9 @@ public class ContentJdbcTemplateRepository {
                 rs.getString("url"));
     }
 
-    public List<Content> getAllContent() {
+    public List<Content> findAll() {
         String sql = "SELECT * FROM Content";
-        //List<Content> contents = jdbcTemplate.query(sql, ContentJdbcTemplateRepository::mapRow); //using method reference to static method
+        //List<Content> contents = jdbcTemplate.query(sql, ContentJdbcTemplateRepository::mapRow); //using static method reference
         List<Content> contents = jdbcTemplate.query(sql, (rs, rowNum) -> mapRow(rs,rowNum) ); //using lambda function
         return contents;
     }
@@ -54,13 +54,13 @@ public class ContentJdbcTemplateRepository {
      result set to a Content object.
      */
     public void createContent(String title, String desc, Status status, Type contentType, String URL) {
-        String sql = "INSERT INTO Content (title, desc, status, content_type, date_created, URL) VALUES (?, ?, ?, ?, NOW(), ?)";
-        jdbcTemplate.update(sql, title, desc, status, contentType, URL);
+        String sql = "INSERT INTO Content (title, description, status, content_type, date_created, URL) VALUES (?, ?, ?, ?, NOW(), ?)";
+        jdbcTemplate.update(sql, title, desc, status.name(), contentType.name(), URL);
     }
 
     public void updateContent(int id, String title, String desc, Status status, Type contentType, String URL) {
-        String sql = "UPDATE Content SET title=?, desc=?, status=?, content_type=?, date_updated=NOW(), url=? WHERE id=?";
-        jdbcTemplate.update(sql, title, desc, status, contentType, URL, id);
+        String sql = "UPDATE Content SET title=?, description=?, status=?, content_type=?, date_updated=NOW(), url=? WHERE id=?";
+        jdbcTemplate.update(sql, title, desc, status.name(), contentType.name(), URL, id);
     }
 
     public void deleteContent(int id) {
@@ -68,10 +68,15 @@ public class ContentJdbcTemplateRepository {
         jdbcTemplate.update(sql, id);
     }
 
-    public Content getContent(int id) {
+    public Content getContentByID(int id) {
         String sql = "SELECT * FROM Content WHERE id=?";
         //2nd param of array of Object is an array that maps to the "?" placeholders in the sql
         Content content = jdbcTemplate.queryForObject(sql, new Object[]{id}, ContentJdbcTemplateRepository::mapRow); //must return 1 row
+        //using static method reference above for SAM interface/Functional Interface implementation
         return content;
+    }
+
+    public boolean existsById(Integer id) {
+        return findAll().stream().filter(content -> content.id().equals(id)).count()==1;
     }
 }
