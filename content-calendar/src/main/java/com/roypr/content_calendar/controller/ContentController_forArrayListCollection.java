@@ -12,13 +12,13 @@ import java.util.List;
 //@CrossOrigin //so that a front-end application on a different domain and/or port is allowed to interact with the springboot backend
 //@RestController
 //@RequestMapping("/api/content")
-public class ContentController_copy {
+public class ContentController_forArrayListCollection {
 
     private final ContentCollectionRepository repository;
 
     /*@Autowired annotation is not needed here for dependency injection of repository object into the ContentController constructor,
      since it is the only public constructor. It is implicit.*/
-    public ContentController_copy(ContentCollectionRepository repository) {
+    public ContentController_forArrayListCollection(ContentCollectionRepository repository) {
         /* repository = new ContentCollectionRepository();
         Object creation with new keyword should be avoided as it is now done through the ApplicationContext of Spring fw
          */
