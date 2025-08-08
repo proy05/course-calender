@@ -1,23 +1,27 @@
 package com.roypr.content_calendar.controller;
 
-import org.springframework.beans.factory.annotation.Value;
+
+import com.roypr.content_calendar.config.ContentCalenderProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @RestController
 public class HomeController {
 
-    @Value("${cc.welcomeMessage: Default welcome message}") //Spring expression language SPEL to pick from application.properties file
-    private String welcomeMessage;
 
-    @Value("${cc.about}")
-    private String about;
+    private final ContentCalenderProperties properties;
+
+    //now spring is managing the ContentCalenderProperties (@ConfigurationProperties) bean
+    // and will inject it into below constructor
+    public HomeController(ContentCalenderProperties properties) {
+        this.properties = properties;
+    }
 
     @GetMapping("/")
-    public Map<String,String> home(){ //return JSON
-        return Map.of("welcomeMessage", welcomeMessage, "about", about)  ;
+    //return an object of ContentCalenderProperties record class with welcomeMessage and about
+    public ContentCalenderProperties home(){
+        return properties; //send back as json dictionary automatically
     }
 
 }

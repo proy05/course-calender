@@ -1,5 +1,6 @@
 package com.roypr.content_calendar;
 
+import com.roypr.content_calendar.config.ContentCalenderProperties;
 import com.roypr.content_calendar.model.Content;
 import com.roypr.content_calendar.model.Status;
 import com.roypr.content_calendar.model.Type;
@@ -7,12 +8,17 @@ import com.roypr.content_calendar.repository.ContentRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
+//@EnableConfigurationProperties is a Spring Boot annotation used to activate one or more
+// @ConfigurationProperties classes so that Spring Boot will bind external configuration
+// (from application.properties, application.yml, env vars, etc.) to them
+@EnableConfigurationProperties(ContentCalenderProperties.class)
 @SpringBootApplication
 public class ContentCalendarApplication {
 
