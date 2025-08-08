@@ -32,7 +32,7 @@ public class ContentCalendarApplication {
 	//As it is a CommandlineRunner(FI), it is run/created after dependency injection is done as the app starts up
 	@Bean
 	CommandLineRunner commandLineRunner(ContentRepository repository){ //contentRepository param is autowired
-		//insert some data into the db
+		//Bootstrapping code: insert some data into the db
 		return args -> {
 			Content c  = new Content(null,
 					"My first blogpost",
