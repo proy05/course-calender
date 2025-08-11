@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS content (
     id INT AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,  -- @NotBlank: must have at least 1 non-whitespace char (validated in app layer)
-    desc TEXT,
+    description TEXT,
     status VARCHAR(50) NOT NULL,
     content_type VARCHAR(50) NOT NULL,
     date_created TIMESTAMP NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS content (
 
 /*
 --INSTEAD this initial loading is done in ContentCalenderApplication class using CommandLineRunner
-INSERT INTO content ( title, desc, status, content_type, date_created, date_updated, url )
+INSERT INTO content ( title, description, status, content_type, date_created, date_updated, url )
 VALUES (
     'Spring Boot Guide Blog Post',
     'A comprehensive guide to Spring Boot features and setup.',

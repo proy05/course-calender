@@ -17,12 +17,14 @@ public class DataLoader implements CommandLineRunner {
     //CommandLineRunner can be used to run some bootstrapping code like db row loading.
     //It is run after dependency injection is done as the app starts up.
 
+    //both fields provided by Spring by dependency injection
     private final ContentRepository repository;
     private final ObjectMapper objectMapper;
 
     public DataLoader(ContentRepository repository, ObjectMapper objectMapper) {
         this.repository = repository;
-        this.objectMapper = objectMapper;
+        this.objectMapper = objectMapper; //automatically initialized Spring bean present in IOC container
+        // as jackson is in classpath
     }
 
 
@@ -35,12 +37,15 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println("Hello from DataLoader :)");
+        //if (repository.count()==0){ //Run bootstrap data loader only when the content table is empty
         try(InputStream inputStream = TypeReference.class.getResourceAsStream("/data/content.json")){
             repository.saveAll(objectMapper.readValue(
                     inputStream,
-                    new TypeReference<List<Content>>(){} //this argument is an anonymous inner class implementing abstract TypeReference<T>
+                    new TypeReference<List<Content>>(){} //this argument is an anonymous inner class object
+                    //(with no body) implementing abstract TypeReference<T>
                     )
             );
+            }
         }
-    }
+    //}
 }
