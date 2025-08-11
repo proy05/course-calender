@@ -37,7 +37,8 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         System.out.println("Hello from DataLoader :)");
-        //if (repository.count()==0){ //Run bootstrap data loader only when the content table is empty
+        System.out.println("Count is " + repository.count());
+        if (repository.count()==1){ //Run bootstrap data loader only when the content table is empty or has 1 record loaded in ContentCalendarApplication.commandLineRunner()
         try(InputStream inputStream = TypeReference.class.getResourceAsStream("/data/content.json")){
             repository.saveAll(objectMapper.readValue(
                     inputStream,
@@ -47,5 +48,5 @@ public class DataLoader implements CommandLineRunner {
             );
             }
         }
-    //}
+    }
 }

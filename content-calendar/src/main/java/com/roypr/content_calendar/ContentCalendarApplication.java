@@ -43,7 +43,7 @@ public class ContentCalendarApplication {
 					null,
 					""
 			);
-			repository.save(c);
+			if (repository.count()==0) repository.save(c);
 
 		}; //lambda function to implement CommandLineRunner FI
 	}

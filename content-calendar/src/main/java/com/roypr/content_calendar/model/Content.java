@@ -12,7 +12,7 @@ public record Content(
         Integer id,
         @NotBlank //Validation for at least 1 non-white space char
         String title,
-        @Column(value = "DESCRIPTION") //map to db column 'DESCRIPTION' instead of 'desc'
+        @Column(value = "description") //(Renamed to lower case for postgres) map to db column 'DESCRIPTION' instead of 'desc'
         String desc,
         Status status,
         Type contentType,

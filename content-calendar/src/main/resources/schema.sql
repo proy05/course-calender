@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS content (
-    id INT AUTO_INCREMENT,
+    id SERIAL,
     title VARCHAR(255) NOT NULL,  -- @NotBlank: must have at least 1 non-whitespace char (validated in app layer)
     description TEXT,
     status VARCHAR(50) NOT NULL,
